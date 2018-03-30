@@ -1,0 +1,52 @@
+{% extends 'event/base.html' %}
+{% load staticfiles %}
+{% block content %}
+
+
+            {% if user.is_authenticated %}
+                <div class="page-container">
+
+                    <h2 class="top-menu">Hello {{ user.username }},</h2>
+                    <p>Please choose from below options.</p>
+<div class="links">
+                    <!-- Example row of columns -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="thumbnail">
+                                <img src="{% static "images/customer.jpg" %}" alt="customer"/>
+                                <div class="caption">
+                                    <h2>Manage Events</h2>
+                                    <p>Employees can add volunteer hours. HR managers can add/update/delete events.</p>
+                                    {% if user.is_authenticated %}
+                                        <p><a class="btn btn-default" href="{% url 'event:event_list' %}"
+                                              role="button">View
+                                            details &raquo;</a></p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% if request.user.is_superuser %}
+                         <div class="col-md-4">
+                            <div class="thumbnail">
+                                <img src="{% static "images/stocks.jpg" %}" alt="stocks"/>
+                                <div class="caption">
+                                    <h2>Manage Organizations</h2>
+                                    <p>HR Managers can add/update/delete organizations.</p>
+                                    <p><a class="btn btn-default" href="{% url 'event:org_list' %}" role="button">View
+                                        details &raquo;</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                </div>
+            {% endif %}
+
+
+
+    </body>
+    </html>
+{% endblock %}

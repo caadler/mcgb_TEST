@@ -1,0 +1,7 @@
+li a {
+    color: green;
+    font-family: 'Lobster';
+}
+body {
+    background: white url("css/background.gif") no-repeat right bottom;
+

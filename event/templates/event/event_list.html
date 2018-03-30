@@ -1,0 +1,88 @@
+{% extends 'event/base.html' %}
+
+
+{% block content %}
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Mid-City Gives Back</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+    </head>
+    <body>
+    <style>
+        body {
+            background-color: beige;
+        }
+    </style>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Welcome!</div>
+                    <div class="panel-body">
+                        <p>Below is a list of all events.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h2 style="padding-left: 15Px">Event List</h2>
+    </div>
+    <div>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+            <tr class="bg-info">
+                <th>Event ID</th>
+                <th>Org ID</th>
+                <th>Event Description</th>
+                <th>Event Start Date</th>
+                <th>Event Start Time</th>
+                <th>Event End Date</th>
+                <th>Event End Time</th>
+                <th>Event Requirement</th>
+                <th>Event Capacity</th>
+                {% if request.user.is_superuser %}
+                <th colspan="2">Actions</th>
+                {% elif request.user.is_staff %}
+                <th>Event Add hours</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for events in events %}
+                <tr>
+                    <td>{{ events.Event_ID }}</td>
+                    <td>{{ events.Org_ID }}</td>
+                    <td>{{ events.Event_Description }}</td>
+                    <td>{{ events.Event_StartDate }}</td>
+                    <td>{{ events.Event_StartTime }}</td>
+                    <td>{{ events.Event_EndDate }}</td>
+                    <td>{{ events.Event_EndTime }}</td>
+                    <td>{{ events.Event_Requirement }}</td>
+                    <td>{{ events.Event_MaxPax }}</td>
+                    {% if request.user.is_superuser %}
+                    <td><a href="{% url 'event:event_edit' pk=events.pk %}" class="btn btn-warning">Edit</a>
+                    <td><a href="{% url 'event:event_delete' pk=events.pk %}"
+                           onclick="return confirm('Are you sure you want to delete?')"
+                           class="btn btn-danger">Delete</a>
+                    </td>
+                    {% elif request.user.is_staff %}
+                    <td><a href="{% url 'event:event_edit' pk=events.pk %}" class="btn btn-warning">Add hours</a>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+                {% if request.user.is_superuser %}
+                <div class="row">
+                    <a href="{% url 'event:event_new' %}" class="row"><span
+                            class="btn btn-primary">Add Event</span></a>
+                </div>
+                {% endif %}
+    </div>
+    </body>
+    </html>
+{% endblock %}
