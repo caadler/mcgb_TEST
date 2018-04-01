@@ -108,57 +108,13 @@ TIMES = [
     ('11:00PM', '23:00'),
     ('11:30PM', '23:30'),
     ]
-class User(models.Model):
-    User_ID = models.IntegerField(blank=False, null=False)
-    User_Password = models.CharField(max_length=50)
-    User_Fname = models.CharField(max_length=50)
-    User_Lname = models.CharField(max_length=50)
-    User_Username = models.CharField(max_length=50)
-    User_Lastlogin = models.DateTimeField(default=timezone.now)
-    User_Datejoined = models.DateField(default=timezone.now)
-    User_Email = models.CharField(max_length=50)
-    User_IsActive = models.CharField(max_length=50)
-    User_IsSuperuser = models.CharField(max_length=50)
 
-    def created(self):
-        self.User_Datejoined = timezone.now()
-        self.save()
-
-    def updated(self):
-        self.save()
-
-    def __str__(self):
-        return str(self.User_ID)
-
-
-class Group(models.Model):
-    Group_ID = models.IntegerField(blank=False, null=False)
-    Group_Name = models.CharField(max_length=50)
-    User_ID = models.ForeignKey(User, related_name='groups')
-
-    def created(self):
-        self.save()
-
-    def __str__(self):
-        return str(self.Group_ID)
-
-
-class User_Permission(models.Model):
-    User_Permission_ID = models.IntegerField(blank=False, null=False)
-    Auth_Permission_ID = models.IntegerField(blank=False, null=False)
-    User_ID = models.ForeignKey(User, related_name='user_permissions')
-
-    def created(self):
-        self.save()
-
-    def __str__(self):
-        return str(self.User_ID)
 
 
 class Organization(models.Model):
     Org_ID = models.IntegerField(blank=False, null=False, unique=True)
     Org_Name = models.CharField(max_length=50)
-    Org_Phone = models.IntegerField(blank=False, null=False, max_length=9)
+    Org_Phone = models.CharField(blank=False, null=False, max_length=9)
     Org_Description = models.CharField(max_length=500)
     Org_Email = models.CharField(max_length=50)
     Org_Street = models.CharField(max_length=50)
@@ -184,41 +140,41 @@ class OrgContactPerson(models.Model):
     def created(self):
         self.save()
 
+    def __str__(self):
+        return str(self.Org_ID)
+
 
 class Event(models.Model):
-
     Event_ID = models.IntegerField(blank=False, null=False, unique=True)
     Org_ID = models.ForeignKey(Organization, related_name='events')
     Event_Description = models.CharField(max_length=500)
-    Event_StartTime = models.CharField(max_length=10, choices=TIMES)
-    Event_EndTime = models.CharField(max_length=10, choices=TIMES)
     Event_StartDate = models.DateField(default=timezone.now)
+    Event_StartTime = models.CharField(max_length=10, choices=TIMES)
     Event_EndDate = models.DateField(default=timezone.now)
+    Event_EndTime = models.CharField(max_length=10, choices=TIMES)
     Event_Requirement = models.CharField(max_length=50)
     Event_MaxPax = models.IntegerField(blank=False)
     Event_Street = models.CharField(max_length=50)
     Event_City = models.CharField(max_length=50)
     Event_State = models.CharField(max_length=20, choices=STATES)
     Event_Postal = models.IntegerField(blank=False, null=False)
-    Event_Hour = models.IntegerField(default=0)
 
     def created(self):
         self.save()
+
+    def __str__(self):
+        return str(self.Event_ID)
+
 
 
 class Emp_Record(models.Model):
-    User_ID = models.ForeignKey(User)
-    EmpRecord_Validation = models.BooleanField
-    Event_ID = models.ForeignKey(Event)
-    EmpRecord_Time = models.DecimalField(max_digits=3, decimal_places=2)
-    Org_ID = models.ForeignKey(Organization)
+    username = models.ForeignKey(User, related_name='user')
+    Event_ID = models.ForeignKey(Event, related_name='events')
+    EmpRecord_Time = models.DecimalField(max_digits=4, decimal_places=2)
 
     def created(self):
         self.save()
 
+    def __str__(self):
+        return str(self.username, self.Event_ID)
 
-class AddHour(models.Model):
-    EmpRecord_Time = models.DecimalField(max_digits=2, decimal_places=2)
-
-    def created(self):
-        self.save()

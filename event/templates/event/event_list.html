@@ -45,7 +45,7 @@
                 <th>Event Requirement</th>
                 <th>Event Capacity</th>
                 {% if request.user.is_superuser %}
-                <th colspan="2">Actions</th>
+                <th colspan="3">Actions</th>
                 {% elif request.user.is_staff %}
                 <th>Event Add hours</th>
                 {% endif %}
@@ -69,6 +69,7 @@
                            onclick="return confirm('Are you sure you want to delete?')"
                            class="btn btn-danger">Delete</a>
                     </td>
+                    <td><a href="{% url 'event:event_addhours' pk=events.pk %}" class="btn btn-warning">Add Hours</a>
                     {% elif request.user.is_staff %}
                     <td><a href="{% url 'event:event_edit' pk=events.pk %}" class="btn btn-warning">Add hours</a>
                     {% endif %}

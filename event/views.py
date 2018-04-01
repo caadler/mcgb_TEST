@@ -32,7 +32,7 @@ def signup(request):
 
 
 def event_list_public(request):
-    events = Event.objects.filter(Event_StartDate__lte=timezone.now())
+    events = Event.objects.filter()
     return render(request, 'event/event_list_public.html',
                   {'events': events})
 
@@ -40,7 +40,7 @@ def event_list_public(request):
 
 @login_required
 def user_event_list(request):
-    events = Event.objects.filter(Event_StartDate__lte=timezone.now())
+    events = Event.objects.filter()
     return render(request, 'event/user_event_list.html',
                   {'events': events})
 
@@ -49,7 +49,7 @@ def user_event_list(request):
 
 @login_required
 def event_list(request):
-    events = Event.objects.filter(Event_StartDate__lte=timezone.now())
+    events = Event.objects.filter()
     return render(request, 'event/event_list.html',
                   {'events': events})
 
@@ -91,6 +91,24 @@ def event_edit(request, pk):
     else:
         form = EventForm(instance=event)
     return render(request, 'event/event_edit.html', {'form': form})
+
+
+
+@login_required
+def event_Emp_Record(request, pk):
+    record = get_object_or_404(Event, pk=pk)
+    if request.method == "POST":
+        # update
+        form = Emp_RecordForm(request.POST, instance=record)
+        if form.is_valid():
+            record = form.save(commit=False)
+            record.save()
+            records = Emp_Record.objects.filter()
+            return render(request, 'event/event_list.html', {'records': records})
+    else:
+        form = Emp_RecordForm(instance=record)
+    return render(request, 'event/event_addhour.html', {'form': form})
+
 
 
 @login_required

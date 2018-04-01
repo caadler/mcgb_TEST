@@ -1,5 +1,5 @@
 from django import forms
-from .models import Event, Organization, AddHour
+from .models import Event, Organization, Emp_Record
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.contrib.admin import widgets
@@ -11,7 +11,7 @@ class EventForm(forms.ModelForm):
         fields = ('Event_ID', 'Org_ID', 'Event_Description', 'Event_StartDate', 'Event_StartTime', 'Event_EndDate',
                   'Event_EndTime',
                   'Event_Requirement', 'Event_MaxPax', 'Event_Street', 'Event_City', 'Event_State',
-                  'Event_Postal', 'Event_Hour')
+                  'Event_Postal')
 
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
@@ -36,7 +36,9 @@ class SignUpForm(UserCreationForm):
         fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2',)
 
 
-class HourForm(forms.ModelForm):
+
+class Emp_RecordForm(forms.ModelForm):
     class Meta:
-        model = AddHour
-        fields = ('EmpRecord_Time',)
+        model = Emp_Record
+        fields = ('username', 'Event_ID', 'EmpRecord_Time')
+
