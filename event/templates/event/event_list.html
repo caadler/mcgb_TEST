@@ -45,9 +45,7 @@
                 <th>Event Requirement</th>
                 <th>Event Capacity</th>
                 {% if request.user.is_superuser %}
-                <th colspan="3">Actions</th>
-                {% elif request.user.is_staff %}
-                <th>Event Add hours</th>
+                <th colspan="2">Actions</th>
                 {% endif %}
             </tr>
             </thead>
@@ -69,9 +67,6 @@
                            onclick="return confirm('Are you sure you want to delete?')"
                            class="btn btn-danger">Delete</a>
                     </td>
-                    <td><a href="{% url 'event:event_addhours' pk=events.pk %}" class="btn btn-warning">Add Hours</a>
-                    {% elif request.user.is_staff %}
-                    <td><a href="{% url 'event:event_edit' pk=events.pk %}" class="btn btn-warning">Add hours</a>
                     {% endif %}
                 </tr>
             {% endfor %}
@@ -79,10 +74,20 @@
         </table>
                 {% if request.user.is_superuser %}
                 <div class="row">
-                    <a href="{% url 'event:event_new' %}" class="row"><span
-                            class="btn btn-primary">Add Event</span></a>
+                    <div class="col-md-4">
+                        <a href="{% url 'event:event_new' %}" class="btn btn-primary">Add Event</a>
+                    </div>
+                    <div class="col-md-4">
+                        <a href="{% url 'event:event_addhours' %}" class="btn btn-primary">Add Hours</a>
+                    </div>
                 </div>
-                {% endif %}
+                {% elif user.is_authenticated %}
+                <div class="row">
+                    <a href="{% url 'event:staff_addhours' %}" class="btn btn-warning">Add hours</a>
+                </div>
+                    {% endif %}
+
+
     </div>
     </body>
     </html>

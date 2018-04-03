@@ -167,6 +167,7 @@ class Event(models.Model):
 
 
 
+
 class Emp_Record(models.Model):
     username = models.ForeignKey(User, related_name='user')
     Event_ID = models.ForeignKey(Event, related_name='events')
@@ -176,5 +177,5 @@ class Emp_Record(models.Model):
         self.save()
 
     def __str__(self):
-        return str(self.username, self.Event_ID)
+        return str(self.username)
 

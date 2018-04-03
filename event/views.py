@@ -77,6 +77,8 @@ def event_new(request):
     return render(request, 'event/event_new.html', {'form': form})
 
 
+
+
 @login_required
 def event_edit(request, pk):
     event = get_object_or_404(Event, pk=pk)
@@ -94,20 +96,40 @@ def event_edit(request, pk):
 
 
 
+
+
 @login_required
-def event_Emp_Record(request, pk):
-    record = get_object_or_404(Event, pk=pk)
+def event_Emp_Record(request):
+    record = get_object_or_404(Event, Event_ID=1)
     if request.method == "POST":
         # update
-        form = Emp_RecordForm(request.POST, instance=record)
+        form = Emp_RecordForm(request.POST)
         if form.is_valid():
             record = form.save(commit=False)
             record.save()
-            records = Emp_Record.objects.filter()
-            return render(request, 'event/event_list.html', {'records': records})
+            events = Event.objects.filter()
+            return render(request, 'event/event_list.html', {'events': events})
     else:
         form = Emp_RecordForm(instance=record)
     return render(request, 'event/event_addhour.html', {'form': form})
+
+
+@login_required
+def event_Staff_Record(request):
+    Emp_Record = get_object_or_404(Event, Event_ID=1)
+    if request.method == "POST":
+        form = Staff_RecordForm(request.POST)
+        if form.is_valid():
+            Emp_Record = form.save(commit=False)
+            Emp_Record.username = request.user
+            Emp_Record.save()
+            events = Event.objects.filter()
+            return render(request, 'event/event_list.html', {'events': events})
+    else:
+        form = Staff_RecordForm(instance=Emp_Record)
+    return render(request, 'event/staff_addhour.html', {'form': form})
+
+
 
 
 

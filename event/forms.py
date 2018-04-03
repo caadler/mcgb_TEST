@@ -16,7 +16,7 @@ class EventForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
         self.fields['Event_StartDate'].widget = widgets.AdminDateWidget()
-        self.fields['Event_EndDate'].widget = widgets.AdminTimeWidget()
+        self.fields['Event_EndDate'].widget = widgets.AdminDateWidget()
 
 
 class OrgForm(forms.ModelForm):
@@ -42,3 +42,7 @@ class Emp_RecordForm(forms.ModelForm):
         model = Emp_Record
         fields = ('username', 'Event_ID', 'EmpRecord_Time')
 
+class Staff_RecordForm(forms.ModelForm):
+    class Meta:
+        model = Emp_Record
+        fields = ('Event_ID', 'EmpRecord_Time')
